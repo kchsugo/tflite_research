@@ -22,10 +22,8 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Usage: %s <gpu_part.tflite> <cpu_part.tflite>\n", argv[0]);
         return 1;
     }
-
-    // ========================================
+  
     // 1. 모델 로드
-    // ========================================
     auto gpu_model = tflite::FlatBufferModel::BuildFromFile(argv[1]);
     auto cpu_model = tflite::FlatBufferModel::BuildFromFile(argv[2]);
     TFLITE_MINIMAL_CHECK(gpu_model && cpu_model);
@@ -34,9 +32,7 @@ int main(int argc, char* argv[]) {
 
     tflite::ops::builtin::BuiltinOpResolverWithoutDefaultDelegates resolver;
 
-    // ========================================
     // 2. GPU Interpreter (첫 번째 분할 모델)
-    // ========================================
     std::unique_ptr<tflite::Interpreter> gpu_interp;
     tflite::InterpreterBuilder(*gpu_model, resolver)(&gpu_interp);
     TFLITE_MINIMAL_CHECK(gpu_interp);
@@ -55,12 +51,9 @@ int main(int argc, char* argv[]) {
         std::memset(gpu_input, 0,
             gpu_interp->tensor(gpu_interp->inputs()[0])->bytes);
     }
-
-    // ★ 반드시 한 번 Invoke() 해야 output buffer 주소가 확정됨
-    //   (delegate가 내부적으로 GPU 실행 → GPU→CPU 복사 → output tensor에 결과 저장)
+    
     TFLITE_MINIMAL_CHECK(gpu_interp->Invoke() == kTfLiteOk);
 
-    // GPU output 텐서 정보
     int gpu_out_idx = gpu_interp->outputs()[0];
     TfLiteTensor* gpu_out_tensor = gpu_interp->tensor(gpu_out_idx);
     void* gpu_out_ptr = gpu_out_tensor->data.raw;
@@ -71,10 +64,7 @@ int main(int argc, char* argv[]) {
     printf("[GPU OUT] data ptr     : %p\n", gpu_out_ptr);
     TFLITE_MINIMAL_CHECK(gpu_out_ptr);
 
-    // ========================================
-    // 3. CPU Interpreter (두 번째 분할 모델)
-    //    ★ 핵심: input을 GPU output 포인터에 직접 매핑
-    // ========================================
+
     std::unique_ptr<tflite::Interpreter> cpu_interp;
     tflite::InterpreterBuilder(*cpu_model, resolver)(&cpu_interp);
     TFLITE_MINIMAL_CHECK(cpu_interp);
@@ -82,9 +72,6 @@ int main(int argc, char* argv[]) {
 
     int cpu_in_idx = cpu_interp->inputs()[0];
 
-    // ★ SetCustomAllocationForTensor: AllocateTensors 전에 호출해야 함
-    //   이렇게 하면 CPU interpreter가 자체 메모리 할당하지 않고
-    //   gpu_out_ptr을 input으로 직접 사용
     TfLiteCustomAllocation alloc;
     alloc.data = gpu_out_ptr;
     alloc.bytes = gpu_out_bytes;
@@ -93,7 +80,6 @@ int main(int argc, char* argv[]) {
         cpu_interp->SetCustomAllocationForTensor(cpu_in_idx, alloc) == kTfLiteOk);
     TFLITE_MINIMAL_CHECK(cpu_interp->AllocateTensors() == kTfLiteOk);
 
-    // ★ Zero-copy 검증
     void* cpu_in_ptr = cpu_interp->tensor(cpu_in_idx)->data.raw;
     size_t cpu_in_bytes = cpu_interp->tensor(cpu_in_idx)->bytes;
 
@@ -115,9 +101,7 @@ int main(int argc, char* argv[]) {
 
     bool zero_copy = (cpu_in_ptr == gpu_out_ptr);
 
-    // ========================================
-    // 4. Warmup
-    // ========================================
+
     for (int w = 0; w < 5; ++w) {
         gpu_interp->Invoke();
         if (!zero_copy)
@@ -126,29 +110,14 @@ int main(int argc, char* argv[]) {
         cpu_interp->Invoke();
     }
 
-    // ========================================
-    // 5. Profiled Pipeline
-    // ========================================
-    //
-    //  [GPU model Invoke()]
-    //       ↓  (delegate 내부: GPU VRAM → CPU RAM 복사 — 이건 불가피)
-    //  gpu_out_tensor->data.raw 에 결과 존재
-    //       ↓  (zero-copy: 포인터 공유, memcpy 없음!)
-    //  [CPU model Invoke()]
-    //       ↓
-    //  최종 결과
-    //
+
     const int RUNS = 20;
     double sum_gpu = 0, sum_cpu = 0, sum_pipe = 0;
 
     for (int r = 0; r < RUNS; ++r) {
         auto t0 = std::chrono::high_resolution_clock::now();
 
-        // Step 1: GPU 분할 모델 실행
         TFLITE_MINIMAL_CHECK(gpu_interp->Invoke() == kTfLiteOk);
-        // → Invoke() 리턴 시점에 gpu_out_tensor->data.raw에 결과 있음
-        //   (delegate가 내부적으로 clFinish + clEnqueueReadBuffer 완료)
-
         auto t1 = std::chrono::high_resolution_clock::now();
 
         // Step 2: 데이터 전달
@@ -157,9 +126,9 @@ int main(int argc, char* argv[]) {
             std::memcpy(cpu_in_ptr, gpu_out_ptr,
                 gpu_out_bytes < cpu_in_bytes ? gpu_out_bytes : cpu_in_bytes);
         }
-        // zero_copy 성공 시: 아무것도 안 함 — 같은 메모리!
 
-        // Step 3: CPU 분할 모델 실행
+
+
         TFLITE_MINIMAL_CHECK(cpu_interp->Invoke() == kTfLiteOk);
 
         auto t2 = std::chrono::high_resolution_clock::now();
@@ -171,9 +140,6 @@ int main(int argc, char* argv[]) {
         sum_pipe += gpu_us + cpu_us;
     }
 
-    // ========================================
-    // 6. 결과 출력
-    // ========================================
     printf("\n========================================\n");
     printf("  Pipeline Benchmark (%d runs avg)\n", RUNS);
     printf("========================================\n");
@@ -196,9 +162,6 @@ int main(int argc, char* argv[]) {
         printf("\n");
     }
 
-    // ========================================
-    // 7. 정리
-    // ========================================
     gpu_interp.reset();
     cpu_interp.reset();
     TfLiteGpuDelegateV2Delete(gpu_delegate);
