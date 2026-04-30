@@ -34,9 +34,7 @@ int main(int argc, char* argv[]) {
 
     tflite::ops::builtin::BuiltinOpResolver resolver;
     
-    // ========================================
-    // 2. CPU Interpreter 설정 및 실행 (첫 번째 모델)
-    // ========================================
+
     std::unique_ptr<tflite::Interpreter> cpu_interpreter;
     tflite::InterpreterBuilder(*cpu_model, resolver)(&cpu_interpreter);
     TFLITE_MINIMAL_CHECK(cpu_interpreter);
@@ -59,10 +57,7 @@ int main(int argc, char* argv[]) {
 
     printf("\n[CPU OUT] index: %d, ptr: %p, size: %zu bytes\n", cpu_out_idx, cpu_out_ptr, cpu_out_bytes);
 
-    // ========================================
-    // 3. GPU Interpreter 설정 (두 번째 모델)
-    //    ★ CPU의 출력을 GPU의 입력으로 Zero-copy 매핑
-    // ========================================
+    // ==============================
     std::unique_ptr<tflite::Interpreter> gpu_interpreter;
     tflite::InterpreterBuilder(*gpu_model, resolver)(&gpu_interpreter);
     TFLITE_MINIMAL_CHECK(gpu_interpreter);
@@ -73,6 +68,7 @@ int main(int argc, char* argv[]) {
     TfLiteDelegate* gpu_delegate = TfLiteGpuDelegateV2Create(&gpu_opts);
     TFLITE_MINIMAL_CHECK(gpu_interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk);
 
+  
     // [핵심] GPU 입력에 CPU 출력 주소 매핑
     int gpu_in_idx = gpu_interpreter->inputs()[0];
     TfLiteCustomAllocation gpu_input_alloc;
@@ -91,9 +87,7 @@ int main(int argc, char* argv[]) {
     printf("  결과: %s\n", is_zero_copy ? "✅ ZERO-COPY 성공!" : "⚠️ ZERO-COPY 실패 (자동 복사 모드)");
     printf("========================================\n");
 
-    // ========================================
-    // 4. Benchmark & Verification
-    // ========================================
+ 
     const int RUNS = 10;
     double sum_total = 0;
 
