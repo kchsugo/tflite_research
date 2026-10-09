@@ -1,0 +1,4 @@
+﻿*/build/
+tensorflow/
+*.exe
+*.obj

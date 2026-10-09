@@ -1,0 +1,21 @@
+model,direction,k,cpu_stage_ms,gpu_stage_ms,boundary_kb,cpu_nodes,gpu_nodes
+mobilenet_v2_full.tflite,CPU-first,1,1.5568,1.5697,1568.00,1,1
+mobilenet_v2_full.tflite,GPU-first,61,0.2361,1.5031,245.00,3,1
+mobilenet_v2_full.tflite,ALL-GPU,0,0.0000,1.2153,0,0,0
+mobilenet_v2_full.tflite,ALL-CPU,65,43.3554,0.0166,0,0,0
+lanenet_fp32.tflite,CPU-first,0,0.0000,4.3158,1024.00,1,1
+lanenet_fp32.tflite,GPU-first,85,13.7087,14.0888,66560.00,2,1
+lanenet_fp32.tflite,ALL-GPU,0,0.0000,4.1316,0,0,0
+lanenet_fp32.tflite,ALL-CPU,87,469.5097,0.0412,0,0,0
+BiseNet.tflite,CPU-first,2,1.5614,17.5478,16318.43,2,1
+BiseNet.tflite,GPU-first,61,0.0000,43.1887,32400.00,1,1
+BiseNet.tflite,ALL-GPU,0,0.0000,16.9883,0,0,0
+BiseNet.tflite,ALL-CPU,63,3033.8203,0.0449,0,0,0
+yolov4-tiny-416_ieie (1).tflite,CPU-first,1,0.1976,3.1545,2037.76,1,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,114,0.6052,3.2631,839.72,37,1
+yolov4-tiny-416_ieie (1).tflite,ALL-GPU,0,0.0000,2.8542,0,0,0
+yolov4-tiny-416_ieie (1).tflite,ALL-CPU,152,300.4031,0.0380,0,0,0
+WideResNet50_float.tflite,CPU-first,2,0.8217,7.0288,588.00,2,1
+WideResNet50_float.tflite,GPU-first,74,0.5821,19.7641,588.00,4,1
+WideResNet50_float.tflite,ALL-GPU,0,0.0000,8.3439,0,0,0
+WideResNet50_float.tflite,ALL-CPU,79,1037.8688,0.0545,0,0,0

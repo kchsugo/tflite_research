@@ -1,0 +1,112 @@
+model,direction,k,cpu_stage_ms,gpu_stage_ms,cost_ms,boundary_kb,cpu_nodes,gpu_nodes
+mobilenet_v2_full.tflite,CPU-first,0,0.0000,1.1600,1.1600,0.00,0,1
+mobilenet_v2_full.tflite,CPU-first,6,14.1083,1.5065,14.1083,294.00,6,1
+mobilenet_v2_full.tflite,CPU-first,12,23.9941,1.6198,23.9941,441.00,12,1
+mobilenet_v2_full.tflite,CPU-first,18,38.1298,1.8266,38.1298,686.00,18,1
+mobilenet_v2_full.tflite,CPU-first,24,32.6656,1.1068,32.6656,49.00,24,1
+mobilenet_v2_full.tflite,CPU-first,30,43.5140,1.1648,43.5140,343.00,30,1
+mobilenet_v2_full.tflite,CPU-first,36,40.7779,1.1549,40.7779,49.00,36,1
+mobilenet_v2_full.tflite,CPU-first,42,53.0705,1.0508,53.0705,147.00,42,1
+mobilenet_v2_full.tflite,CPU-first,48,61.0170,0.7087,61.0170,441.00,48,1
+mobilenet_v2_full.tflite,CPU-first,54,63.7913,0.6133,63.7913,30.62,54,1
+mobilenet_v2_full.tflite,CPU-first,60,68.7155,0.6384,68.7155,183.75,60,1
+mobilenet_v2_full.tflite,GPU-first,0,41.2205,5.1907,41.2205,1568.00,64,1
+mobilenet_v2_full.tflite,GPU-first,6,34.9073,5.9126,34.9073,2058.00,58,1
+mobilenet_v2_full.tflite,GPU-first,12,30.4603,1.3968,30.4603,98.00,52,1
+mobilenet_v2_full.tflite,GPU-first,18,21.6611,1.2944,21.6611,686.00,46,1
+mobilenet_v2_full.tflite,GPU-first,24,22.3980,1.7903,22.3980,343.00,40,1
+mobilenet_v2_full.tflite,GPU-first,30,18.1721,0.9529,18.1721,98.00,34,1
+mobilenet_v2_full.tflite,GPU-first,36,17.1104,2.0220,17.1104,294.00,28,1
+mobilenet_v2_full.tflite,GPU-first,42,9.7312,2.0985,9.7312,73.50,22,1
+mobilenet_v2_full.tflite,GPU-first,48,8.3493,1.7952,8.3493,110.25,16,1
+mobilenet_v2_full.tflite,GPU-first,54,4.8080,1.7273,4.8080,214.38,10,1
+mobilenet_v2_full.tflite,GPU-first,60,0.3078,3.1096,3.1096,61.25,4,1
+lanenet_fp32.tflite,CPU-first,0,0.0000,6.9248,6.9248,1024.00,1,1
+lanenet_fp32.tflite,CPU-first,8,270.0877,4.1958,270.0877,2048.00,9,1
+lanenet_fp32.tflite,CPU-first,16,312.6577,4.1325,312.6577,3136.00,17,1
+lanenet_fp32.tflite,CPU-first,24,308.9835,3.5869,308.9835,2624.00,25,1
+lanenet_fp32.tflite,CPU-first,32,330.4605,3.6015,330.4605,2752.00,33,1
+lanenet_fp32.tflite,CPU-first,40,321.1734,3.3400,321.1734,2240.00,41,1
+lanenet_fp32.tflite,CPU-first,48,379.8188,3.3274,379.8188,2240.00,49,1
+lanenet_fp32.tflite,CPU-first,56,373.5305,2.6920,373.5305,2240.00,57,1
+lanenet_fp32.tflite,CPU-first,64,347.0133,2.2188,347.0133,2176.00,65,1
+lanenet_fp32.tflite,CPU-first,72,365.0798,2.3275,365.0798,2176.00,73,1
+lanenet_fp32.tflite,CPU-first,80,416.0159,1.4641,416.0159,1024.00,81,1
+lanenet_fp32.tflite,GPU-first,0,267.8331,94.0420,267.8331,8192.00,86,1
+lanenet_fp32.tflite,GPU-first,8,205.1987,2.0904,205.1987,1280.00,78,1
+lanenet_fp32.tflite,GPU-first,16,166.1818,7.6717,166.1818,2112.00,70,1
+lanenet_fp32.tflite,GPU-first,24,134.2410,4.0624,134.2410,1344.00,62,1
+lanenet_fp32.tflite,GPU-first,32,159.0615,2.9310,159.0615,1472.00,54,1
+lanenet_fp32.tflite,GPU-first,40,141.0608,3.2491,141.0608,1344.00,46,1
+lanenet_fp32.tflite,GPU-first,48,134.3711,3.8508,134.3711,1536.00,38,1
+lanenet_fp32.tflite,GPU-first,56,146.4690,4.0692,146.4690,1536.00,30,1
+lanenet_fp32.tflite,GPU-first,64,134.4126,5.1052,134.4126,1152.00,22,1
+lanenet_fp32.tflite,GPU-first,72,134.5878,3.4821,134.5878,1088.00,14,1
+lanenet_fp32.tflite,GPU-first,80,64.0134,3.5844,64.0134,2048.00,7,1
+BiseNet.tflite,CPU-first,0,0.0000,15.6216,15.6216,0.00,0,1
+BiseNet.tflite,CPU-first,6,371.9239,19.6071,371.9239,30009.23,6,1
+BiseNet.tflite,CPU-first,12,1221.2183,87.0703,1221.2183,32400.00,12,1
+BiseNet.tflite,CPU-first,18,1516.6555,95.9907,1516.6555,27105.25,18,1
+BiseNet.tflite,CPU-first,24,2120.0211,107.6997,2120.0211,16200.00,24,1
+BiseNet.tflite,CPU-first,30,2462.1374,102.9677,2462.1374,16200.00,30,1
+BiseNet.tflite,CPU-first,36,2699.1261,100.5394,2699.1261,16260.00,36,1
+BiseNet.tflite,CPU-first,42,3092.1282,89.7454,3092.1282,14883.00,42,1
+BiseNet.tflite,CPU-first,48,3191.2867,88.8779,3191.2867,14884.00,48,1
+BiseNet.tflite,CPU-first,54,3085.8163,39.4799,3085.8163,506.25,54,1
+BiseNet.tflite,CPU-first,60,3206.7712,39.3775,3206.7712,506.25,60,1
+BiseNet.tflite,GPU-first,0,2553.9129,12.6893,2553.9129,8119.70,62,1
+BiseNet.tflite,GPU-first,6,2509.3234,202.2706,2509.3234,18998.73,56,1
+BiseNet.tflite,GPU-first,12,2060.3782,226.9177,2060.3782,21600.00,50,1
+BiseNet.tflite,GPU-first,18,1577.2342,239.9265,1577.2342,21600.00,44,1
+BiseNet.tflite,GPU-first,24,1289.4857,41.8980,1289.4857,18900.00,38,1
+BiseNet.tflite,GPU-first,30,768.3931,12.8749,768.3931,16200.00,32,1
+BiseNet.tflite,GPU-first,36,409.9382,139.3144,409.9382,14880.00,26,1
+BiseNet.tflite,GPU-first,42,265.3205,13.2535,265.3205,14883.00,20,1
+BiseNet.tflite,GPU-first,48,254.4195,13.8244,254.4195,14882.00,14,1
+BiseNet.tflite,GPU-first,54,87.1315,12.8015,87.1315,506.30,8,1
+BiseNet.tflite,GPU-first,60,31.9057,38.9623,38.9623,32400.00,2,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,0,0.0000,3.0148,3.0148,0.00,0,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,13,98.9048,4.9239,98.9048,5408.00,13,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,26,165.8016,3.7395,165.8016,2704.00,26,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,39,217.1027,2.7053,217.1027,1352.00,39,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,52,273.6073,2.2882,273.6073,1352.00,52,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,65,318.6909,1.9374,318.6909,844.34,65,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,78,352.1845,2.2944,352.1845,844.34,78,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,91,343.4771,1.8151,343.4771,843.02,91,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,104,316.9431,1.5886,316.9431,839.72,104,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,117,311.5126,1.4490,311.5126,839.72,117,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,130,273.1282,0.9883,273.1282,831.80,130,1
+yolov4-tiny-416_ieie (1).tflite,CPU-first,143,270.4264,0.4573,270.4264,39.61,143,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,0,349.3821,7.4125,349.3821,2037.76,151,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,52,6.9364,2.6785,6.9364,1014.00,99,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,65,4.3183,2.8635,4.3183,844.34,86,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,78,4.2311,2.7361,4.2311,844.34,73,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,91,4.0468,2.8446,4.0468,842.36,60,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,104,0.7200,2.9488,2.9488,839.72,47,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,117,0.4329,2.9695,2.9695,837.08,34,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,130,0.0452,3.0191,3.0191,39.61,21,1
+yolov4-tiny-416_ieie (1).tflite,GPU-first,143,0.0224,2.9240,2.9240,39.61,8,1
+WideResNet50_float.tflite,CPU-first,0,0.0000,8.1688,8.1688,0.00,0,1
+WideResNet50_float.tflite,CPU-first,7,16.9037,8.6821,16.9037,2352.00,7,1
+WideResNet50_float.tflite,CPU-first,14,151.5769,8.8310,151.5769,6272.00,14,1
+WideResNet50_float.tflite,CPU-first,21,212.1466,8.4957,212.1466,6385.00,21,1
+WideResNet50_float.tflite,CPU-first,28,352.3303,7.4096,352.3303,3136.00,28,1
+WideResNet50_float.tflite,CPU-first,35,491.7643,6.9035,491.7643,2352.00,35,1
+WideResNet50_float.tflite,CPU-first,42,560.9898,6.0558,560.9898,1568.00,42,1
+WideResNet50_float.tflite,CPU-first,49,678.8368,5.2678,678.8368,1176.00,49,1
+WideResNet50_float.tflite,CPU-first,56,745.0938,4.5292,745.0938,1176.00,56,1
+WideResNet50_float.tflite,CPU-first,63,799.0873,3.4367,799.0873,784.00,63,1
+WideResNet50_float.tflite,CPU-first,70,903.9915,4.8053,903.9915,588.00,70,1
+WideResNet50_float.tflite,CPU-first,77,1195.9191,1.1255,1195.9191,392.00,77,1
+WideResNet50_float.tflite,GPU-first,0,1063.5508,1.1645,1063.5508,588.00,78,1
+WideResNet50_float.tflite,GPU-first,7,1075.9188,13.0795,1075.9188,2352.00,71,1
+WideResNet50_float.tflite,GPU-first,14,991.1679,12.6270,991.1679,3136.00,64,1
+WideResNet50_float.tflite,GPU-first,21,818.4597,11.8387,818.4597,3920.00,57,1
+WideResNet50_float.tflite,GPU-first,28,687.5041,10.5659,687.5041,1568.00,50,1
+WideResNet50_float.tflite,GPU-first,35,541.5572,3.5781,541.5572,3136.00,43,1
+WideResNet50_float.tflite,GPU-first,42,511.6697,12.3746,511.6697,784.00,36,1
+WideResNet50_float.tflite,GPU-first,49,383.0735,4.4607,383.0735,1568.00,29,1
+WideResNet50_float.tflite,GPU-first,56,290.4621,15.0657,290.4621,1176.00,22,1
+WideResNet50_float.tflite,GPU-first,63,195.4014,5.9791,195.4014,1568.00,15,1
+WideResNet50_float.tflite,GPU-first,70,65.0493,17.6231,65.0493,588.00,8,1
+WideResNet50_float.tflite,GPU-first,77,0.0000,8.6268,8.6268,8.00,1,1
