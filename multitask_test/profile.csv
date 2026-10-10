@@ -1,0 +1,6 @@
+model_path,C_ms,G_ms,gpu_ok,C_over_G
+..\models\mobilenet_v2_full.tflite,9.5625,3.7367,1,2.5591
+..\models\lanenet_fp32.tflite,352.2600,9.0726,1,38.8267
+..\models\BiseNet.tflite,2395.7876,23.7906,1,100.7032
+..\models\yolov4-tiny-416_ieie (1).tflite,249.1460,8.8444,1,28.1700
+..\models\WideResNet50_float.tflite,865.1880,10.2788,1,84.1721
