@@ -2,3 +2,5 @@
 tensorflow/
 *.exe
 *.obj
+docs/
+docs/
