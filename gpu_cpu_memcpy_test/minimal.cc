@@ -92,8 +92,7 @@ int main(int argc, char* argv[]) {
   // Allocate tensor buffers.
   TFLITE_MINIMAL_CHECK( first_interpreter->AllocateTensors() == kTfLiteOk);
   TFLITE_MINIMAL_CHECK( second_interpreter->AllocateTensors() == kTfLiteOk);
-  printf("\n--- Hybrid Pipeline Initialized (RTX 5060 & CPU) ---\n");
-  //정밀한 성능 측정을 위해 chrono 라이브러리를 사용하여 GPU delegate가 적용된 첫 번째 인터프리터의 성능을 측정
+ 
   auto total_time = std::chrono::high_resolution_clock::now();
   TFLITE_MINIMAL_CHECK(first_interpreter->Invoke() == kTfLiteOk);
   auto copy_time = std::chrono::high_resolution_clock::now();
