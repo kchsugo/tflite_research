@@ -35,6 +35,8 @@ The experiments below build toward the last question.
 | `cpu_gpu_zerocopy_test/` | Hybrid, zero‑copy | Makes the second interpreter’s input tensor **directly reference** the first interpreter’s output buffer via `SetCustomAllocationForTensor`, removing the boundary `memcpy`. Verifies pointer identity and benchmarks the pipeline. |
 | `cpufirst_gpu_zerocopy_test/` | Hybrid, zero‑copy (CPU→GPU) | Zero‑copy variant that invokes the CPU part first, then the GPU part. |
 | `internal_split_test/` | **Single interpreter, internal split** | Loads **one** original `.tflite`, keeps nodes `0..k-1` on CPU and delegates nodes `k..` to the GPU inside a single interpreter, then sweeps `k` to find the fastest cut. No file pre‑splitting, no user‑side memcpy. |
+| `multitask_test/` | Multi-task, whole-model placement | Runs several models at once and assigns each whole model to CPU or GPU from a measured cost table, with runtime calibration and an offload-cancel rule. |
+| `split_profiler/` | Split, batching, planner | Cut-point sweep in both directions, batch-size measurement, Johnson/Jackson ordering, and a unified planner that chooses between whole placement and splitting. |
 | `models/` | — | `mobilenet_v2_full.tflite` sample model used by the experiments. |
 
 ---
@@ -93,7 +95,7 @@ end‑to‑end pipeline latency over multiple runs.
 ./minimal <gpu_part.tflite> <cpu_part.tflite>
 ```
 
-### 6. Internal split (current direction) — `internal_split_test/`
+### 6. Internal split — `internal_split_test/`
 Instead of pre‑splitting the model into two files, this loads **one** original `.tflite` into **one**
 interpreter and sets the GPU delegate option `first_delegate_node_index = k`. Nodes `0..k-1` stay on the
 CPU; nodes `k..` become the GPU partition. Because everything lives in a single arena, the boundary
@@ -112,6 +114,28 @@ sweep `k` and report the cut point with the lowest latency.
 > macro and the delegate‑options struct has a matching ABI. Changing this define forces a one‑time full
 > rebuild of the GPU delegate.
 
+### 7. Multi-task CPU/GPU assignment — `multitask_test/`
+Runs several models at once and assigns each whole model to CPU or GPU to minimize the total completion time (makespan).
+- `profile.cc` measures each model alone on CPU and GPU and writes a cost table (`profile.csv`).
+- `online.cc` assigns models using that table, re-measures CPU time at runtime, and cancels an offload when the calibrated cost shows it would lose.
+
+Result (120 tasks, vs. GPU-only): the table-only scheduler was **0.86×** (slower). The CPU time in the table (9.56 ms, measured alone) became 17.96 ms under co-run. With runtime calibration and the cancel rule: **1.17×**, and no case slower than GPU-only.
+
+### 8. Split, batching and a unified planner — `split_profiler/`
+- `split_profiler.cc` sweeps the cut point `k` in both directions inside one interpreter: CPU-first via `first_delegate_node_index`, GPU-first via `last_delegate_node_index`.
+- `batch_test.cc` measures per-input latency for batch sizes 1–32. MobileNetV2: 1.246 → 0.292 ms (**4.27×**); BiSeNet: **1.08×**; the largest batches ran out of GPU memory.
+- `jackson_online.cc` orders two-stage (CPU→GPU / GPU→CPU) tasks with Johnson's rule and Jackson's extension.
+- `unified.cc` chooses between whole-model placement and splitting on a single cost table.
+- `fig_*.py` regenerate the figures from the CSV files.
+
+---
+
+## Limitations
+
+- Measured on a laptop with a discrete GPU (RTX 3060 Laptop, i5-11400H, OpenCL). CPU and GPU do not share memory, so boundary transfers go over PCIe.
+- Split measurements were taken with XNNPACK disabled on the CPU side, so they are not used as conclusions about splitting.
+- The schedulers minimize completion time; they do not model deadlines or different arrival times.
+- Batching is measured separately and is not yet part of the unified planner.
 ---
 
 ## Building
@@ -123,7 +147,7 @@ local checkout of TensorFlow.
 * A TensorFlow source checkout (provides `tensorflow/lite`)
 * CMake ≥ 3.16 and a C++17 compiler
 * For the GPU experiments: an OpenCL‑capable GPU + drivers (the TFLite GPU delegate uses OpenCL)
-* XNNPACK is disabled and the GPU delegate is enabled in the CMake files
+* The GPU delegate is enabled in the CMake files. XNNPACK is disabled in the single-model experiments; see `unified.cc` for the multi-task setting.
 
 ```bash
 # 1) Get TensorFlow (once)
@@ -161,11 +185,10 @@ Notes:
 
 ## Roadmap
 
-The hybrid memcpy/zero‑copy experiments motivated the move to **internal split**: one file, one
-interpreter, an automatically shared boundary, and an offline sweep to pick the optimal cut point `k`.
-Next steps include sweeping on additional models (e.g. YOLOv4‑tiny, BiseNet) and extending beyond a
-single contiguous cut toward arbitrary node sets via a custom delegate.
-
+The hybrid memcpy/zero-copy experiments motivated the move to **internal split**, and the multi-task experiments showed that costs measured alone do not hold under co-run. Next steps:
+- Re-measure on an embedded board where CPU and GPU share memory.
+- Add deadlines and different arrival times to the scheduler.
+- Bring batching into the unified planner, deciding cut point and batch size together.
 ---
 
 ## Author
