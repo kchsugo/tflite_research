@@ -68,7 +68,7 @@ A single binary with two phases:
   `GPU` (absorbed into the delegate kernel) or `CPU` (fallback), then reports warmup + averaged GPU latency.
 
 This is where you can see how many ops the GPU delegate fuses and whether any nodes fall back to CPU.
-(`Note`: the model also contains CPU‑only operators.)
+(Note: the model also contains CPU‑only operators.)
 
 ```bash
 ./minimal <model.tflite>
